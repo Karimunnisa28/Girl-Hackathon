@@ -13,3 +13,49 @@
    - Define connections to the router, which typically include clock and reset signals, input and output data signals, and control signals such as allocation and validity.
   
 6. End the module definition.
+
+1.
+   BUFFER_SIZE
+   MESH_SIZE_X
+   MESH_SIZE_Y
+   MIN_LATENCY
+   MAX_BANDWIDTH
+   THROTTLING_PERCENTAGE
+
+2
+   BUFFER_SIZE_ADJUSTED = 0.9 * BUFFER_SIZE
+
+3. // Instantiate mesh module
+   module mesh:
+   
+4. 
+   inputs: clk, rst, is_onoff_i, is_allocatable_i, data_i, is_valid_i
+   outputs: error_o, data_o, is_valid_o, is_onoff_o, is_allocatable_o
+
+   for row = 0 to MESH_SIZE_Y:
+      for col = 0 to MESH_SIZE_X:
+         // Instantiate router module for each position
+         router_inst[row][col] = router(BUFFER_SIZE_ADJUSTED, MIN_LATENCY, MAX_BANDWIDTH, THROTTLING_PERCENTAGE)
+
+5. // Inside each router instantiation
+   module router(BUFFER_SIZE_ADJUSTED, MIN_LATENCY, MAX_BANDWIDTH, THROTTLING_PERCENTAGE):
+      inputs: clk, rst, is_onoff_i, is_allocatable_i, data_i, is_valid_i
+      outputs: error_o, data_o, is_valid_o, is_onoff_o, is_allocatable_o
+      
+      // Define connections to the router
+      connect clk to router.clk
+      connect rst to router.rst
+      connect is_onoff_i to router.is_onoff_i
+      connect is_allocatable_i to router.is_allocatable_i
+      connect data_i to router.data_i
+      connect is_valid_i to router.is_valid_i
+      
+      // Connect router outputs
+      connect router.error_o to error_o
+      connect router.data_o to data_o
+      connect router.is_valid_o to is_valid_o
+      connect router.is_onoff_o to is_onoff_o
+      connect router.is_allocatable_o to is_allocatable_o
+
+6. // End module definition
+
