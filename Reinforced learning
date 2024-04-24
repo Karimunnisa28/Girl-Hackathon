@@ -1,0 +1,81 @@
+## Improved Design Document: Reinforcement Learning for Optimal Parameter Selection in System Simulator
+
+This improved design document incorporates suggestions for clarity and addresses potential issues:
+
+**1. Introduction**
+
+Reinforcement Learning (RL) offers a powerful method for identifying optimal configurations in complex systems, including system simulators. This document details an RL framework designed to optimize the following parameters: BUFFER_SIZE, MESH_SIZE_X, MESH_SIZE_Y, MIN_LATENCY, MAX_BANDWIDTH, and THROTTLING_PERCENTAGE. It outlines the states, actions, reward structure, and proposes a suitable RL algorithm for this application.
+
+**2. RL Framework**
+
+**2.1. States/Observations:**
+
+- The current state, also referred to as observation, represents the system's condition based on measurable metrics. These include:
+    - Buffer occupancy
+    - Read and write transaction latency
+    - Bandwidth utilization
+    - Power consumption
+    - Arbitration rates
+    - Historical performance data (e.g., moving averages)
+
+**2.2. Actions:**
+
+- Actions signify adjustments made to system parameters. These include:
+    - Changing BUFFER_SIZE
+    - Modifying MESH_SIZE_X and MESH_SIZE_Y
+    - Tuning MIN_LATENCY and MAX_BANDWIDTH
+    - Setting THROTTLING_PERCENTAGE
+
+**2.3. Rewards:**
+
+- Rewards are the feedback mechanism guiding the RL agent towards optimal policies. They are calculated based on desired performance metrics:
+    - **Positive rewards:**
+        - Minimizing read and write latency
+        - Maximizing bandwidth utilization
+        - Minimizing power consumption
+    - **Negative rewards:**
+        - Buffer occupancy exceeding a threshold
+        - Excessive arbitration rates (indicating contention)
+
+**3. Recommended RL Algorithm: Deep Q-Network (DQN)**
+
+**Justification:**
+
+- DQN excels in problems with large state spaces, a common characteristic of system simulators due to the interplay of numerous parameters.
+- It effectively handles continuous state spaces through function approximation using neural networks.
+- DQN's experience replay mechanism promotes sample efficiency and training stability.
+- The simulator's trace data can be used for experience replay, enriching the learning process.
+- The simulator's discrete time steps align well with DQN's discrete action selection.
+
+**4. Training Process**
+
+**4.1. Initialization:**
+
+- Initialize the DQN agent with random or pre-defined parameter values.
+
+**4.2. Experience Gathering:**
+
+- Execute episodes where the agent interacts with the simulator, observing states, taking actions, and receiving rewards.
+- Store these experiences (state-action-reward-next state transitions) in a replay buffer.
+
+**4.3. Training:**
+
+- Sample experience batches from the replay buffer and update the DQN's Q-network parameters to minimize the temporal difference (TD) error.
+- Utilize target network updates and epsilon-greedy exploration to balance exploration (trying new actions) and exploitation (leveraging learned optimal actions).
+
+**4.4. Evaluation:**
+
+- Periodically evaluate the learned policies on a validation set to assess performance and ensure the ability to generalize to unseen scenarios.
+
+**5. Hyperparameter Tuning**
+
+- Fine-tune hyperparameters like learning rate, discount factor, batch size, and neural network architecture to optimize DQN's performance. Techniques like grid search or Bayesian optimization can be employed.
+
+
+
+
+
+
+Deep Q-Networks (DQN)  is well-suited for handling complex decision spaces and can learn to navigate through large state-action spaces efficiently.DQN has been widely studied and implemented in various domains, including robotics, gaming, and network optimization. Its well-established framework and availability of libraries (e.g., TensorFlow, PyTorch) make it relatively easy to implement and experiment with.
+The limitations of DQN are Generating representative training data for NoC designs, especially for diverse network topologies and traffic patterns, can be challenging and may require extensive simulations or real-world measurements.Finding the right set of hyperparameters for a given NoC design problem can require extensive experimentation and computational resources.
+  
