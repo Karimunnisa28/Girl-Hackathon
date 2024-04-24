@@ -1,0 +1,15 @@
+1. Define module parameters: `BUFFER_SIZE`, `MESH_SIZE_X`, `MESH_SIZE_Y`, `MIN_LATENCY`, `MAX_BANDWIDTH`, and `THROTTLING_PERCENTAGE`.
+  
+2. Calculate `BUFFER_SIZE_ADJUSTED` based on the specified occupancy requirement of 90%.
+  
+3. Instantiate the module `mesh`, which represents a mesh network.
+  
+4. Inside the `mesh` module:
+   - Declare inputs (`clk`, `rst`, `is_onoff_i`, `is_allocatable_i`, `data_i`, `is_valid_i`) and outputs (`error_o`, `data_o`, `is_valid_o`, `is_onoff_o`, `is_allocatable_o`).
+    - Loop through each row and column of the mesh network.
+   - Instantiate a router module (`router_inst`) for each position in the mesh network, passing parameters (`BUFFER_SIZE_ADJUSTED`, `MIN_LATENCY`, `MAX_BANDWIDTH`, `THROTTLING_PERCENTAGE`).
+
+5. Inside each router instantiation:
+   - Define connections to the router, which typically include clock and reset signals, input and output data signals, and control signals such as allocation and validity.
+  
+6. End the module definition.
